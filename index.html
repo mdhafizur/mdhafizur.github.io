@@ -197,6 +197,23 @@ a.row:hover .row-title { color: var(--accent); }
 .legend .l-store { background: var(--store); border-bottom-width: 3px; }
 .legend .l-plain { background: var(--bg); }
 
+/* Service catalogue */
+.svc-group { display: flex; flex-direction: column; }
+.svc-group + .svc-group { margin-top: 1.25rem; }
+.svc-head { font-size: var(--step--1); font-weight: 600; color: var(--fg); margin: 0 0 0.35rem; }
+.svc { border-top: 1px solid var(--line); }
+.svc:last-child { border-bottom: 1px solid var(--line); }
+.svc summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 1fr auto; gap: 0.2rem 1rem; padding: 0.7rem 1.4rem 0.7rem 0; position: relative; align-items: baseline; }
+.svc summary::-webkit-details-marker { display: none; }
+.svc summary::after { content: "+"; position: absolute; right: 0.2rem; top: 0.62rem; font-family: var(--font-mono); color: var(--muted); }
+.svc[open] summary::after { content: "−"; }
+.svc summary:hover .svc-name { color: var(--accent); }
+.svc summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+.svc-name { font-weight: 500; min-width: 0; }
+.svc-stack { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); text-align: right; }
+.svc p { margin: 0 0 0.9rem; color: var(--muted); max-width: 40rem; font-size: 0.9375rem; }
+@media (max-width: 34rem) { .svc summary { grid-template-columns: 1fr; } .svc-stack { text-align: left; } }
+
 .prose-ui p, .prose-ui li { max-width: 40rem; }
 .prose-ui ul { padding-left: 1.1rem; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
 .prose-ui p { margin: 0 0 0.75rem; }
@@ -418,7 +435,7 @@ const SITE = {
     { label: "LinkedIn", url: "https://linkedin.com/in/mdhafizur98" },
     { label: "GitHub", url: "https://github.com/mdhafizur" }
   ],
-  figures: [["6+ yrs", "in production software"], ["8", "systems below"], ["100k+", "end users served"]],
+  figures: [["6+ yrs", "in production software"], ["30+", "services shipped"], ["100k+", "end users served"]],
   about: [
     "I work across the stack, but I'm happiest where the backend meets operations: message flows between networks, identity, payments, and the migrations nobody wants to do. I like systems that are boring to run, with pinned versions, one clear owner for every piece of state, and a rollback that is one change away.",
     "Languages I use day to day: TypeScript and Node.js, Go, Java and Kotlin with Spring Boot, and C# with .NET. On the frontend I mostly work in Angular, with Next.js, React and Vue when the project calls for it.",
@@ -431,7 +448,7 @@ const SITE = {
 
   /* ---------- EXPERIENCE (timeline) ---------- */
   experience: [
-    { when: "Nov 2025 - now", role: "Senior Software Engineer", org: "Software consultancy · Bamberg, Germany", note: "Main developer of seven production services for a public-sector client.", project: "meridian" },
+    { when: "Nov 2025 - now", role: "Senior Software Engineer", org: "Software consultancy · Bamberg, Germany", note: "Main developer on a public-sector microservice platform: 19 repositories, 2,000+ commits.", project: "meridian" },
     { when: "Jan 2024 - Oct 2025", role: "Software Engineer (Working Student)", org: "Neon Information Security GmbH · Remote, Munich", note: "Go APIs, Next.js UI and an AI log reviewer for a security validation product.", project: "vase" },
     { when: "Jan 2023 - Oct 2023", role: "Software Engineer / Project Lead", org: "Wavelet Solutions Sdn. Bhd. · Subang Jaya", note: "Led a five-person team building a campaign-automation platform for retailers.", project: "wavelet-campaigns" },
     { when: "Nov 2022 - Oct 2023", role: "Senior Software Consultant (Contract)", org: "Eboss Group Holdings · Remote, Petaling Jaya", note: "Migrated a 100,000-user property platform off Azure and rebuilt its payments.", project: "mylivin" },
@@ -449,41 +466,101 @@ const SITE = {
     {
       slug: "meridian",
       title: "Meridian",
-      kind: "Public-sector digital services",
-      summary: "Citizen-facing services for a German state authority: online case lookup, digital hearings, identity, geodata, and a signed message relay between two isolated networks.",
+      kind: "Public-sector microservice platform",
+      summary: "A microservice platform for a German public-sector authority: citizen portals, digital hearings, case and document services, shared platform services, geodata, and a signed relay between two isolated networks.",
       years: "2025 - now",
       status: "Live",
-      role: "Main developer, 7 of the platform's services",
+      role: "Senior engineer, main developer on most services below",
       team: "5 engineers",
-      client: "German state authority (codename)",
-      stack: ["Angular 20", "Node.js", "Kotlin", "Spring Boot", "RabbitMQ", "Redis", "MongoDB", "Keycloak", "Kubernetes"],
+      client: "German public-sector authority (codename)",
+      stack: ["Node.js", "Express 5", "Angular", "Kotlin", "Spring Boot", "MongoDB", "RabbitMQ", "Redis", "Keycloak", "Istio", "OpenTelemetry", "Kubernetes", "Prometheus", "Grafana"],
       overview: [
-        "Citizens use the platform to look up a traffic-offence case, see the fine, and respond to an official hearing online instead of by post. Behind the public pages, an internal network holds the case data, and the two networks can't talk to each other directly.",
-        "I'm the main developer on seven of its services: the citizen portal, the public hearing gateway, the cross-network relay, the identity service, a reverse-geocoding service, a customer-feedback service, and the tracing and metrics setup that covers all of them."
+        "Citizens use the platform to look up a case, respond to an official hearing online, and give feedback. Companies and other outside parties get time-limited access to the case data they're entitled to. Staff work on the internal side, which runs in a separate network that the public side can't reach directly.",
+        "The platform is about twenty small services. Most are Node.js and Express, built API-first: an OpenAPI contract is the router, the validator and the documentation. Two geodata services are Kotlin and Spring Boot. Everything runs on Kubernetes clusters with no internet access, and I've contributed to 19 of the repositories, with over 2,000 commits since early 2026."
       ],
       architecture: {
-        boundary: { label: "Kubernetes · public zone", from: 1, to: 3 },
+        boundaries: [
+          { label: "Public network · Kubernetes", from: 1, to: 1 },
+          { label: "Internal network · air-gapped Kubernetes", from: 3, to: 5 }
+        ],
         tiers: [
-          { nodes: [["Citizens", "browser", "ext"]] },
-          { link: "HTTPS · proof-of-work bot check", nodes: [["Citizen portal", "Angular 20 · route guards"], ["Hearing gateway", "Node.js · public API"]] },
-          { link: "REST · OAuth2/JWT · OpenAPI-validated", nodes: [["Identity service", "cached Keycloak read layer"], ["Geo service", "Kotlin · Spring Boot"], ["Feedback service", "Node.js · HMAC"]] },
-          { link: "AMQP", nodes: [["Cross-network relay", "RabbitMQ · Redis dedup · retry/DLQ", "core"]] },
-          { link: "Ed25519-signed, one-way bridge", nodes: [["Internal case systems", "restricted network", "ext"], ["Keycloak", "identity provider", "ext"], ["Federal geo services", "3 queried in parallel", "ext"]] }
+          { nodes: [["Citizens", "browser", "ext"], ["Companies & external parties", "token links", "ext"], ["Staff", "internal apps", "ext"]] },
+          { link: "HTTPS · bot check · OAuth2", nodes: [["Citizen portals", "Angular", "core"], ["Hearing gateway", "public API", "core"], ["Feedback platform", "Angular · Node.js", "core"], ["Public read APIs", "documents, towing", "core"]] },
+          { link: "signed requests · body hash · path ACL", nodes: [["Network bridge", "tunnels between the two networks", "core"]] },
+          { nodes: [["Case services", "offences, access passes, documents, towing", "core"], ["Shared services", "files, notes, mail, identity", "core"], ["Geodata", "reverse geocoding, address search", "core"]] },
+          { link: "AMQP · Mongoose", nodes: [["RabbitMQ", "jobs, events, retries, DLQs"], ["Cross-network relay", "Ed25519 · Redis dedup", "core"], ["MongoDB", "replica sets", "store"]] },
+          { link: "every request, via the mesh", nodes: [["Request tracer", "Istio → OTel → RabbitMQ → MongoDB", "core"], ["Metrics & dashboards", "Prometheus · Grafana"]] },
+          { link: "outbound", nodes: [["Keycloak", "identity provider", "ext"], ["Federal geo services", "address, roads, postcodes", "ext"], ["SMTP", "mail delivery", "ext"]] }
         ]
       },
+      services: [
+        { group: "Citizen-facing", items: [
+          { name: "Citizen information portal", stack: "Angular 20 · RxJS · Tailwind", lead: true,
+            what: "Citizens look up their case and fine. I replaced the image captcha with ALTCHA proof-of-work, rebuilt login and its validation, and added route guards, auth interceptors and a session countdown." },
+          { name: "Hearing gateway", stack: "Node.js · Express 5", lead: true,
+            what: "The public API for online hearings. Citizens sign in, read their hearing, submit a response and view the evidence image. It owns no data: it authenticates and proxies to an upstream service, adapting to an Angular app that was already deployed against a fixed contract." },
+          { name: "Customer-feedback platform", stack: "Angular · Node.js · MongoDB", lead: true,
+            what: "Surveys sent to citizens after contact, with per-organization links and tokens. I worked across the stack, added HMAC authentication and cursor pagination, and load-tested it with k6 against Prometheus, Loki and Grafana before scaling the Node cluster." }
+        ]},
+        { group: "Case and document services", items: [
+          { name: "Offence case service", stack: "Node.js · MongoDB · public API", lead: true,
+            what: "The core case record for traffic offences, including driving bans and licence classes, with a separate read-only public API. Migrated to Express 5 and Node 24 and moved the public API off axios to the built-in HTTPS client." },
+          { name: "Case access service", stack: "Node.js · MongoDB · RabbitMQ", lead: true,
+            what: "Cases, their participants and access passes, plus an asynchronous PDF pipeline run by a RabbitMQ worker. The OpenAPI contract drives routing and validation, and tokens are verified against Keycloak." },
+          { name: "Document sharing service", stack: "Node.js · MongoDB · RabbitMQ", lead: true,
+            what: "Shares case documents with named outside parties. Each grant gives one person signed access to one case's files. The API never does file work inline: it records a processing step in a transaction and a separate worker runs a state machine, with retry backoff on a delayed exchange." },
+          { name: "Towing case service", stack: "Node.js · MongoDB", lead: true,
+            what: "A simplified mirror of towing cases for a towing-company portal, with per-grantee access tokens. Problem+json errors, JSON Patch updates, and cursor pagination through Link headers." },
+          { name: "File service", stack: "Node.js · MongoDB · ffmpeg · poppler", lead: true,
+            what: "Stores files and generates thumbnails for images, video and PDFs. I added property-level authorization tests so a denied caller can't borrow another token's access." }
+        ]},
+        { group: "Shared platform services", items: [
+          { name: "Mail service", stack: "Node.js · MongoDB · RabbitMQ", lead: true,
+            what: "One service sends every email on the platform. The API accepts and queues, a worker delivers with backoff, a reaper clears the outbox, and failures go to a dead-letter queue. The queue carries only IDs, never message bodies, because email content is personal data." },
+          { name: "Identity service", stack: "Node.js · MongoDB · Keycloak", lead: true,
+            what: "A cached read layer over Keycloak. A sync job maps upstream user attributes into one schema, and the API serves it with cursor pagination, sorting, field selection and role-based access per operation." },
+          { name: "Notes service", stack: "Node.js · MongoDB · Redis",
+            what: "Notes attached to cases, with change history. I moved its tests onto a real in-memory Redis and isolated databases per test worker." },
+          { name: "Applications service", stack: "Node.js · MongoDB",
+            what: "Moved authorization from OAuth scopes to token roles, centralised paging limits, and added static security analysis to CI." }
+        ]},
+        { group: "Cross-network messaging", items: [
+          { name: "Cross-network relay", stack: "Node.js · RabbitMQ · Redis", lead: true,
+            what: "Moves about 50,000 messages a day between the two networks. Each side runs a receiver and a relay worker from one codebase. Batches are signed with Ed25519 keys, deduplicated in Redis, loop-guarded, retried, and dead-lettered when they can't be delivered." },
+          { name: "Network bridge", stack: "Node.js · Redis · Kubernetes",
+            what: "The tunnel the relay and other services cross. I added body-hash checks on signed requests after a penetration test, path canonicalization in its access control, fast failure and clean draining on disconnect, and tunnel metrics." }
+        ]},
+        { group: "Geodata", items: [
+          { name: "Reverse geocoding", stack: "Kotlin · Spring Boot · JDK 25", lead: true,
+            what: "Turns a GPS position into the nearest motorway kilometre, house address, street or postcode by querying three federal geo services in parallel. Stores nothing, supports idempotency keys, and its Kubernetes sizing comes from k6 load tests." },
+          { name: "Address suggestions", stack: "Kotlin · Spring Boot 4.2", lead: true,
+            what: "Address autocomplete. It uses the new HTTP QUERY method so search text stays out of URLs and logs, allows only known applications with a budget each, caches answers for 60 seconds, and returns 503 without calling upstream while upstream is failing." }
+        ]},
+        { group: "Observability and infrastructure", items: [
+          { name: "Request tracer", stack: "Node.js · MongoDB · RabbitMQ", lead: true,
+            what: "Lets the team look up any request across 10+ services. Workers batch-ingest access logs into MongoDB, holding them if the database is down, and a backfill worker reapplies service-mapping rules to stored requests." },
+          { name: "Mesh access-log pipeline", stack: "Istio · OpenTelemetry · RabbitMQ",
+            what: "Envoy sidecars send every request and response to an OpenTelemetry Collector, which enriches and redacts it. A small bridge publishes it to RabbitMQ by class (errors, client errors, requests). Moving to Kafka means swapping one exporter." },
+          { name: "Air-gapped Kubernetes", stack: "Kubernetes · Helm",
+            what: "Clusters in networks with no internet access, with an offline depot for images, packages and charts, and separate dev, test and prod environments. I maintain charts and values for the services above." },
+          { name: "Team engineering plugin", stack: "Claude Code · Codex",
+            what: "A 23-skill plugin that writes down how the team builds a Node.js service, from code style and logging to tests, migrations and deployment, so engineers and AI agents follow the same rules." }
+        ]}
+      ],
       scale: [
-        ["Services I own", "7 in production"],
+        ["Repositories I've committed to", "19"],
+        ["My commits since early 2026", "2,000+"],
         ["Relay throughput", "~50,000 messages/day"],
-        ["Observed traffic", "~10,000 requests/day, 10+ services"],
-        ["Message signing", "Ed25519, keys in certificates"],
-        ["Geo lookups", "3 federal services in parallel"]
+        ["Traced traffic", "~10,000 requests/day, 10+ services"],
+        ["Runtime", "Node 24, Express 5, JDK 25"],
+        ["Clusters", "air-gapped, dev / test / prod"]
       ],
       decisions: [
-        "**A relay instead of a direct link.** The two networks are separated by a restrictive bridge. Every request is signed, deduplicated in Redis, batched, and retried through a dead-letter queue, so a message is never lost or applied twice.",
-        "**One user schema over two identity sources.** The identity service caches Keycloak and a second auth provider in MongoDB and serves one consistent schema with cursor pagination and problem+json errors.",
-        "**Proof-of-work instead of an image captcha.** The citizen login uses ALTCHA, which blocks bots without asking people to read distorted text.",
-        "**Load-test before sizing.** The geo service's Kubernetes requests and limits come from k6 runs, not guesses.",
-        "**Conventions as code.** I wrote a 23-skill plugin for Claude Code and Codex that encodes how the team builds a service, from scaffold to deployment, so engineers and AI agents follow the same rules."
+        "**The contract is the code.** Every service starts from an OpenAPI file that drives routing and request validation, so the docs can't drift from what runs.",
+        "**APIs queue, workers do the work.** File processing, PDF generation and mail never run inside a request. The API records the job and a worker picks it up, with retries and a dead-letter queue.",
+        "**Identifiers on the queue, data in the database.** Messages carry IDs only. Personal data never sits on the broker waiting for a consumer.",
+        "**Two networks, one signed path.** Nothing crosses between networks except through the bridge, with Ed25519 signatures, body hashes and an access list on canonical paths.",
+        "**Same rules for every service.** Problem+json errors, cursor pagination with Link headers, role checks per operation, and the same logging and metrics everywhere. The team plugin keeps new services consistent."
       ]
     },
     {
@@ -923,18 +1000,16 @@ function nodeHtml(n) {
   return `<div class="node${n[2] ? " " + n[2] : ""}"><b>${esc(n[0])}</b>${n[1] ? `<small>${esc(n[1])}</small>` : ""}</div>`;
 }
 function diagram(a) {
-  const piece = (t, i) => `${i ? `<div class="link-down" aria-hidden="true">${t.link ? `<span>${esc(t.link)}</span>` : ""}</div>` : ""}<div class="tier">${t.nodes.map(nodeHtml).join("")}</div>`;
-  const b = a.boundary;
+  const bs = a.boundaries || (a.boundary ? [a.boundary] : []);
+  const link = t => `<div class="link-down" aria-hidden="true">${t.link ? `<span>${esc(t.link)}</span>` : ""}</div>`;
+  const tier = t => `<div class="tier">${t.nodes.map(nodeHtml).join("")}</div>`;
   let html = "";
   a.tiers.forEach((t, i) => {
-    if (b && i === b.from) {
-      if (i) html += `<div class="link-down" aria-hidden="true">${t.link ? `<span>${esc(t.link)}</span>` : ""}</div>`;
-      html += `<div class="boundary"><span class="boundary-label">${esc(b.label)}</span>`;
-      html += `<div class="tier">${t.nodes.map(nodeHtml).join("")}</div>`;
-    } else {
-      html += piece(t, i);
-    }
-    if (b && i === b.to) html += `</div>`;
+    const opening = bs.filter(b => b.from === i);
+    if (i) html += link(t);
+    opening.forEach(b => { html += `<div class="boundary"><span class="boundary-label">${esc(b.label)}</span>`; });
+    html += tier(t);
+    bs.filter(b => b.to === i).forEach(() => { html += `</div>`; });
   });
   const kinds = new Set(a.tiers.flatMap(t => t.nodes.map(n => n[2] || "plain")));
   const legend = [["core", "Built by me"], ["plain", "Platform component"], ["store", "Data store"], ["ext", "Outside the system"]]
@@ -942,6 +1017,14 @@ function diagram(a) {
   const desc = a.tiers.map(t => t.nodes.map(n => n[0]).join(", ")).join(", then ");
   return `<div class="arch-frame"><div class="arch" role="img" aria-label="Architecture, top to bottom: ${esc(desc)}">${html}</div>
     <div class="legend">${legend}</div></div>`;
+}
+
+function servicesHtml(groups) {
+  return groups.map(g => `<div class="svc-group"><h3 class="svc-head">${esc(g.group)}</h3>
+    ${g.items.map(it => `<details class="svc">
+      <summary><span class="svc-name">${esc(it.name)}${it.lead ? '<span class="pill">Main dev</span>' : ""}</span><span class="svc-stack">${esc(it.stack)}</span></summary>
+      <p>${inline(it.what)}</p>
+    </details>`).join("")}</div>`).join("");
 }
 
 function project(p) {
@@ -960,6 +1043,7 @@ function project(p) {
   ${facts.length ? `<dl class="facts">${facts.map(f => `<div><dt>${f[0]}</dt><dd>${esc(f[1])}</dd></div>`).join("")}</dl>` : ""}
   ${p.overview ? `<section class="prose-ui"><h2 class="label">Technical overview</h2>${p.overview.map(t => `<p>${inline(t)}</p>`).join("")}</section>` : ""}
   ${p.architecture ? `<section><h2 class="label">Architecture</h2>${diagram(p.architecture)}</section>` : ""}
+  ${p.services ? `<section><h2 class="label">Services<span class="label-note">${p.services.reduce((n, g) => n + g.items.length, 0)} services and tools. Tap one for details.</span></h2>${servicesHtml(p.services)}</section>` : ""}
   ${p.scale ? `<section><h2 class="label">Scale</h2><table class="spec"><tbody>${p.scale.map(r => `<tr><th scope="row">${esc(r[0])}</th><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></section>` : ""}
   ${p.decisions ? `<section class="prose-ui"><h2 class="label">Key decisions</h2><ul>${p.decisions.map(d => `<li>${inline(d)}</li>`).join("")}</ul></section>` : ""}
   ${related.length ? `<section class="posts"><h2 class="label">Related writing</h2><ul class="rows">${related.map(postRow).join("")}</ul></section>` : ""}
