@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Md Hafizur Rahman, Senior Full-Stack Engineer in Bamberg. Case studies, architecture and technical writing.">
+<title>Hafizur Rahman</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one narrow reading column; work reads like a service manifest, writing like a journal. */
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --fg: #141821;
+  --muted: #5a6273;
+  --line: #dde1e8;
+  --accent: #2647c9;
+  --accent-soft: #e9eeff;
+  --code-bg: #eef0f4;
+  --ok: #1f7a4d;
+  --store: #f0f2f6;
+  --font-ui: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-read: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.1875rem;
+  --step-2: 1.5rem;
+  --step-3: 2.125rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1117; --surface: #151a23; --fg: #e5e8ee; --muted: #98a0b0; --line: #2a3140;
+    --accent: #8fa6ff; --accent-soft: #1a2240; --code-bg: #1a202b; --ok: #5fcf95; --store: #1a1f29;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1117; --surface: #151a23; --fg: #e5e8ee; --muted: #98a0b0; --line: #2a3140;
+  --accent: #8fa6ff; --accent-soft: #1a2240; --code-bg: #1a202b; --ok: #5fcf95; --store: #1a1f29;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-ui);
+  font-size: var(--step-0);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 2.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3.25rem;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+
+/* Header */
+.site-head { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem 1rem; flex-wrap: wrap; }
+.brand { font-weight: 700; font-size: var(--step-0); color: var(--fg); letter-spacing: -0.01em; }
+.brand:hover { text-decoration: none; }
+.nav { display: flex; gap: 1.1rem; flex-wrap: wrap; font-size: var(--step--1); }
+.nav a { color: var(--muted); }
+.nav a:hover { color: var(--fg); text-decoration: none; }
+
+/* Intro */
+.intro { display: flex; flex-direction: column; gap: 1rem; }
+.intro h1 { font-size: var(--step-3); line-height: 1.12; letter-spacing: -0.025em; font-weight: 600; max-width: 24ch; }
+.intro p { margin: 0; color: var(--muted); font-size: var(--step-1); max-width: 36rem; }
+.now { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: var(--step--1); color: var(--muted); }
+.now::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ok); flex: none; }
+.figures { display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; margin: 0.25rem 0 0; padding: 0; list-style: none; }
+.figures li { font-size: var(--step--1); color: var(--muted); }
+.figures b { display: block; font-size: var(--step-1); color: var(--fg); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* Section labels */
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 0 0 0.75rem;
+  font-weight: 500;
+}
+.label-note { font-family: var(--font-ui); text-transform: none; letter-spacing: 0; font-size: var(--step--1); margin-left: 0.5rem; font-weight: 400; }
+section { display: flex; flex-direction: column; }
+
+/* Lists of rows */
+.rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.rows li { border-bottom: 1px solid var(--line); }
+.row { display: grid; grid-template-columns: 1fr auto; gap: 0.3rem 1.5rem; padding: 1.05rem 0; color: inherit; }
+.row:hover { text-decoration: none; }
+a.row:hover .row-title { color: var(--accent); }
+.row-title { font-weight: 600; font-size: var(--step-1); letter-spacing: -0.01em; min-width: 0; }
+.row-meta { font-family: var(--font-mono); font-size: var(--step--1); color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.row-desc { grid-column: 1 / -1; color: var(--muted); margin: 0; max-width: 40rem; }
+.row-stack { grid-column: 1 / -1; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+.row-stack span + span::before { content: " · "; opacity: 0.6; }
+.row-sub { grid-column: 1 / -1; font-size: var(--step--1); color: var(--muted); }
+
+.pill {
+  display: inline-block; font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.04em;
+  text-transform: uppercase; padding: 0.15rem 0.45rem; border-radius: 4px;
+  background: var(--accent-soft); color: var(--accent); vertical-align: 0.2em; margin-left: 0.5rem; font-weight: 500;
+}
+
+/* Experience timeline */
+.xp { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.xp li { display: grid; grid-template-columns: 9.5rem 1fr; gap: 0.25rem 1.5rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+.xp-when { font-family: var(--font-mono); font-size: var(--step--1); color: var(--muted); font-variant-numeric: tabular-nums; padding-top: 0.15rem; }
+.xp-body { min-width: 0; display: flex; flex-direction: column; gap: 0.2rem; }
+.xp-role { font-weight: 600; }
+.xp-org { color: var(--muted); font-size: 0.9375rem; }
+.xp-body p { margin: 0.2rem 0 0; color: var(--muted); font-size: 0.9375rem; max-width: 36rem; }
+.xp-link { font-family: var(--font-mono); font-size: var(--step--1); margin-top: 0.2rem; }
+
+/* Education */
+.edu { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.edu li { display: grid; grid-template-columns: 1fr auto; gap: 0 1.5rem; }
+.edu b { font-weight: 600; }
+.edu span { color: var(--muted); font-size: 0.9375rem; }
+.edu .row-meta { grid-row: 1; grid-column: 2; }
+
+/* About */
+.about p { margin: 0 0 0.9rem; max-width: 40rem; }
+.contact { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; font-family: var(--font-mono); font-size: var(--step--1); }
+.copy {
+  font: inherit; font-size: 0.75rem; color: var(--muted); background: transparent;
+  border: 1px solid var(--line); border-radius: 4px; padding: 0.2rem 0.55rem; cursor: pointer;
+}
+.copy:hover { color: var(--fg); border-color: var(--muted); }
+.links { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+.foot { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 1.25rem; }
+
+/* Detail pages */
+.back { font-family: var(--font-mono); font-size: var(--step--1); color: var(--muted); }
+.back:hover { color: var(--fg); text-decoration: none; }
+.page-head { display: flex; flex-direction: column; gap: 0.9rem; }
+.page-head h1 { font-size: var(--step-3); line-height: 1.12; letter-spacing: -0.025em; font-weight: 600; }
+.page-head .lede { margin: 0; font-size: var(--step-1); color: var(--muted); max-width: 40rem; }
+.codename { font-family: var(--font-mono); font-size: var(--step--1); color: var(--muted); }
+
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 1rem 1.5rem; margin: 0; padding: 1rem 0; border-block: 1px solid var(--line); }
+.facts div { min-width: 0; }
+.facts dt { font-family: var(--font-mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.facts dd { margin: 0.2rem 0 0; font-size: 0.9375rem; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.chip { font-family: var(--font-mono); font-size: 0.75rem; padding: 0.25rem 0.55rem; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
+
+.spec { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+.spec th, .spec td { text-align: left; padding: 0.6rem 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.spec th { font-weight: 500; color: var(--muted); width: 42%; padding-right: 1rem; }
+.spec td { font-family: var(--font-mono); font-size: 0.875rem; font-variant-numeric: tabular-nums; }
+
+/* Architecture diagram: tiers top to bottom, labelled connectors, optional boundary */
+.arch-frame { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 1.25rem 1rem 1rem; }
+.arch { display: flex; flex-direction: column; align-items: stretch; }
+.boundary { border: 1px dashed var(--muted); border-radius: 8px; padding: 1.6rem 0.75rem 0.75rem; position: relative; display: flex; flex-direction: column; }
+.boundary-label {
+  position: absolute; top: -0.65rem; left: 0.75rem; background: var(--surface); padding: 0 0.4rem;
+  font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em;
+}
+.tier { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; }
+.node {
+  flex: 1 1 9.5rem; max-width: 15rem; min-width: 0; text-align: center;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 0.6rem 0.7rem;
+}
+.node b { display: block; font-weight: 600; font-size: 0.9375rem; line-height: 1.3; }
+.node small { display: block; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted); margin-top: 0.2rem; line-height: 1.45; }
+.node.core { background: var(--accent-soft); border-color: var(--accent); }
+.node.core b { color: var(--accent); }
+.node.ext { background: transparent; border-style: dashed; }
+.node.store { background: var(--store); border-radius: 6px 6px 14px 14px; border-bottom-width: 3px; }
+.link-down { min-height: 2rem; display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; }
+.link-down::before { content: ""; grid-column: 2; width: 1px; background: var(--muted); opacity: 0.55; justify-self: center; }
+.link-down span { grid-column: 3; align-self: center; font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted); padding: 0.35rem 0 0.35rem 0.6rem; }
+.legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1.25rem; margin-top: 0.9rem; font-size: 0.75rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 0.45rem; }
+.legend i { width: 14px; height: 10px; border-radius: 2px; border: 1px solid var(--line); display: inline-block; flex: none; }
+.legend .l-core { background: var(--accent-soft); border-color: var(--accent); }
+.legend .l-ext { border-style: dashed; border-color: var(--muted); }
+.legend .l-store { background: var(--store); border-bottom-width: 3px; }
+.legend .l-plain { background: var(--bg); }
+
+.prose-ui p, .prose-ui li { max-width: 40rem; }
+.prose-ui ul { padding-left: 1.1rem; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.prose-ui p { margin: 0 0 0.75rem; }
+
+/* Blog list */
+.posts .row-title { font-size: var(--step-0); }
+
+/* Article */
+.article { font-family: var(--font-read); font-size: 1.125rem; line-height: 1.7; }
+.article > * { max-width: 38rem; }
+.article p { margin: 0 0 1.15rem; }
+.article h2 { font-family: var(--font-ui); font-size: var(--step-2); letter-spacing: -0.015em; margin: 2.25rem 0 0.75rem; font-weight: 600; }
+.article h3 { font-family: var(--font-ui); font-size: var(--step-1); margin: 1.75rem 0 0.5rem; font-weight: 600; }
+.article ul, .article ol { margin: 0 0 1.15rem; padding-left: 1.25rem; }
+.article li { margin-bottom: 0.35rem; }
+.article code { font-family: var(--font-mono); font-size: 0.85em; background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 3px; }
+.article pre {
+  max-width: 100%; margin: 0 0 1.4rem; padding: 1rem 1.1rem; background: var(--code-bg); border-radius: 6px;
+  overflow-x: auto; font-size: 0.8125rem; line-height: 1.65;
+}
+.article pre code { background: none; padding: 0; font-size: inherit; }
+.article blockquote { margin: 0 0 1.15rem; padding-left: 1rem; border-left: 2px solid var(--accent); color: var(--muted); font-style: italic; }
+.article strong { font-weight: 600; }
+.byline { font-family: var(--font-mono); font-size: var(--step--1); color: var(--muted); }
+
+.pager { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 1rem; font-size: 0.9375rem; }
+.pager a { display: flex; flex-direction: column; gap: 0.1rem; max-width: 48%; }
+.pager a.next { text-align: right; margin-left: auto; }
+.pager small { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+
+@media (max-width: 34rem) {
+  .row { grid-template-columns: 1fr; }
+  .row-meta { order: -1; }
+  .xp li { grid-template-columns: 1fr; }
+  .edu li { grid-template-columns: 1fr; }
+  .edu .row-meta { grid-row: auto; grid-column: 1; }
+  .spec th { width: 46%; }
+  .node { flex-basis: 8rem; }
+  .pager a { max-width: 100%; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  main { animation: rise 0.35s ease-out; }
+  @keyframes rise { from { transform: translateY(6px); } to { transform: none; } }
+}
+</style>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<!--
+  ===================== HOW TO EDIT =====================
+  1. Profile, experience and case studies live in the SITE object in the last script.
+  2. Each blog post is a markdown script block (type text/markdown) below.
+     Supported: ## headings, paragraphs, - lists, 1. lists, > quotes,
+     code fences, inline code, **bold**, *italic*, [links](https://...) and [links](#post-slug).
+  3. To add a post, copy a block and change data-slug / data-title / data-date / data-summary.
+  ========================================================
+-->
+
+<script type="text/markdown" data-slug="traefik-metrics" data-title="The server wasn't slow: reading 22 hours of Traefik metrics" data-date="2026-10-24" data-summary="Users said the platform felt slow. One day of Prometheus data showed an idle server, a noisy 404 page, and a cluster of 500s nobody had noticed.">
+After moving a client's platform to a new server, I added Prometheus and Grafana. Traefik exports metrics for every route, cAdvisor covers the containers, node exporter covers the VM, and a Postgres exporter covers the database. The next complaint was "the app feels slow", so instead of guessing I read the first 22 hours of data.
+
+## Start with the machine
+
+If the server is saturated, nothing else matters. It wasn't:
+
+- CPU averaged about 5% of 6 cores. The one spike was the monitoring stack starting up.
+- Disk I/O wait averaged about 1%, and steal time from the hypervisor was 0%.
+- Postgres never had more than 4 connections, and no query ran longer than 200 ms.
+
+That rules out "we need a bigger server" before anyone spends money on it.
+
+## Then look at latency per route
+
+The overall p95 hides which route is slow, so I broke it down by router:
+
+```promql
+histogram_quantile(
+  0.95,
+  sum by (le, router) (rate(traefik_router_request_duration_seconds_bucket[5m]))
+)
+```
+
+Typical p95 was 0.1 to 0.5 seconds. Only 83 of about 14,400 requests (0.6%) took longer than a second, and 76 of those were frontend pages. The worst 15-minute windows happened when traffic was nearly zero, so each one was a single slow request, not a general slowdown.
+
+## Count status codes, not just latency
+
+```promql
+sum by (router, code) (increase(traefik_router_requests_total[1h]))
+```
+
+Two things came out of this that nobody had asked about:
+
+1. **The 404 page was one of the busiest pages.** It was requested hundreds of times a day and took about 0.4 seconds to render, because it ran through the full frontend. A static 404 response would remove that load entirely.
+2. **The main API returned 235 HTTP 500 errors in 22 hours**, in three clusters of 49 to 99 errors. Users saw these as "slow" because the page waited and then failed.
+
+## What I took from it
+
+"Slow" is a symptom, not a diagnosis. Check the machine first, break latency down by route, and always look at status codes next to latency. In this case the fix list was two application bugs, not new hardware.
+</script>
+
+<script type="text/markdown" data-slug="compose-to-proxmox" data-title="Moving a production Docker Compose stack to Proxmox in a hurry" data-date="2026-10-17" data-summary="The host lost the ability to run Linux containers overnight. How the stack got onto a new server, and what slowed us down.">
+A client's production platform went down when its Windows Server VM could no longer run Linux containers (the cause is in [the previous post](#post-nested-virtualization)). The stack was a Docker Compose project: Traefik, a web frontend, a .NET backend image with two API apps, PostgreSQL and MinIO. The goal was simple: get exactly the same stack running on a new server as fast as possible, without losing data.
+
+## 1. Build the target
+
+The new machine was a dedicated server running Proxmox VE, with one public IP. I created one Ubuntu 24.04 VM for the whole stack and put it on a private NAT bridge (`10.10.10.0/24`), with ports 80 and 443 forwarded from the host to the VM. Docker Engine runs natively in the VM, so there's no nested virtualization anywhere.
+
+One VM keeps the move simple. Proxmox makes it cheap to split services later.
+
+## 2. Copy everything, not just the database
+
+The old Docker engine couldn't start, so `pg_dump` wasn't an option. Instead I copied the raw data directories, about 180 GB in total: the repos, the Postgres data directory, roughly 41 GB of MinIO buckets, and the registry images.
+
+```bash
+rsync -aH --numeric-ids --info=progress2 old-host:/srv/app/ /srv/app/
+```
+
+Postgres had been stopped uncleanly. On first start it replayed its write-ahead log and came up consistent. This works because the whole data directory was copied while nothing was writing to it. Copying a running database's files does not give you the same guarantee.
+
+## 3. Rebuild images from pinned commits
+
+Every image was tagged with the Git commit it was built from, so rebuilding was deterministic:
+
+```bash
+git -C ~/repos/backend checkout 21308b5
+docker build -t registry.example.com/app/backend:21308b5 ~/repos/backend
+```
+
+Watch `pull_policy` in the Compose file. With `always`, Compose checks the registry on every `up`. With `if_not_present`, it uses whatever image with that tag is cached locally. On a moving tag like `latest`, that can keep an old build running without anyone noticing. With commit tags both are safe, because the tag never moves.
+
+One surprise: the MinIO image the stack used was no longer published on Docker Hub or Quay. I built it from source at a pinned release instead.
+
+## 4. Keep the certificates
+
+I copied Traefik's `acme.json` across so it didn't need to re-issue every certificate at once. Traefik refuses to use the file unless only its owner can read it:
+
+```bash
+chmod 600 letsencrypt/acme.json
+```
+
+## 5. Switch DNS and check every route
+
+The platform had more than 20 DNS records in Cloudflare. I switched each one to the new IP and then opened every route through Traefik to confirm it answered with the right certificate and the right service.
+
+## 6. Fix what made it scary
+
+With production back up, I added what would have made the night easier:
+
+- **Nightly Postgres dumps**, so the next move never depends on copying raw files.
+- **Incremental MinIO snapshots** with rsync hard links. Each day looks like a full copy, but unchanged files take no extra space.
+- **14 days of retention**, and a small web UI so the client can download a backup without SSH.
+
+```bash
+TODAY=$(date +%F)
+docker compose exec -T postgres pg_dump -U app -Fc app > /backups/postgres/app-$TODAY.dump
+rsync -a --delete --link-dest=/backups/minio/latest /srv/app/minio/ /backups/minio/$TODAY/
+ln -sfn /backups/minio/$TODAY /backups/minio/latest
+find /backups -mindepth 2 -maxdepth 2 -mtime +14 -exec rm -rf {} +
+```
+
+- **Prometheus and Grafana** for Traefik, containers, the VM and Postgres. That paid off within days, as described in [the next post](#post-traefik-metrics).
+
+## What I would tell myself before starting
+
+Pinned images and state kept only in Postgres and MinIO made the move mechanical. The things that cost time were outside the stack: the hypervisor, a disappearing upstream image, and DNS records spread across many hostnames.
+</script>
+
+<script type="text/markdown" data-slug="nested-virtualization" data-title="Linux containers on a Windows Server VM: the nested virtualization wall" data-date="2026-10-10" data-summary="Why Docker suddenly stopped running Linux containers on a cloud Windows VM, what the options were, and why we moved to our own hypervisor.">
+A client's production stack ran as Linux containers (`linux/amd64`) on a Windows Server 2022 VM. I had moved it there from Azure. I recommended a Linux host at the time, but the client chose Windows because it was familiar to the people who administer it. That's a fair reason. It also meant the containers needed a Linux kernel the operating system didn't have.
+
+## Where the Linux kernel comes from
+
+On Windows, Docker runs Linux containers inside a lightweight Linux VM, through WSL 2 or Hyper-V. Either way, Windows has to start its own virtual machine. That needs the CPU's hardware virtualization extensions (Intel VT-x or AMD-V).
+
+On a physical machine that's a BIOS setting. On a cloud VM, the guest only sees those extensions if the host hypervisor passes them through. That pass-through is called **nested virtualization**.
+
+## What happened
+
+It worked for months. Then the hosting provider turned nested virtualization off across its platform in response to a disclosed KVM vulnerability. After the next restart, Docker could no longer start its Linux engine, and production was down.
+
+Nothing was wrong with the containers, the Compose file, or Docker. The Windows event logs showed the real cause: Hyper-V failing to launch its VM. The missing piece was one layer further down, controlled by someone else.
+
+## The options
+
+1. **Ask the provider to enable it again.** On a Hyper-V host this is a per-VM setting that an administrator changes on the host, with the VM powered off:
+
+```powershell
+Set-VMProcessor -VMName <vm-name> -ExposeVirtualizationExtensions $true
+```
+
+   You can't change it from inside the guest. Here the provider had disabled it deliberately for security reasons, so it wasn't coming back soon.
+
+2. **Switch to Windows containers.** Only possible if the images are built for Windows. Ours were Linux images, so this would have meant rebuilding the application.
+
+3. **Run Linux directly.** Put the containers on a Linux host, either a Linux VM or a dedicated server where you control the hypervisor.
+
+We chose the third option: a dedicated server running Proxmox, with the stack in an Ubuntu VM. That removes the nesting entirely, and we own the hypervisor if we need more VMs later. The move itself is in [the next post](#post-compose-to-proxmox).
+
+## The lesson
+
+If the workload is Linux containers, put it on Linux. Familiarity with the host OS matters, but every layer you add to bridge the gap is another thing someone else can switch off.
+</script>
+
+
+<main class="wrap" id="app" aria-live="polite"></main>
+
+<script>
+const SITE = {
+  name: "Md Hafizur Rahman",
+  short: "Hafizur Rahman",
+  title: "Senior Full-Stack Engineer",
+  headline: "Senior full-stack engineer. I build production services and the systems they run on.",
+  intro: "Six years shipping software for public-sector, security, fintech, retail and property clients, from Figma prototype and API design to Kubernetes. Below are the systems I've built, how they're put together, and what I learned along the way.",
+  now: "Senior Software Engineer in Bamberg, Germany",
+  location: "Bamberg, Germany",
+  email: "hafizur.de@gmail.com",
+  links: [
+    { label: "LinkedIn", url: "https://linkedin.com/in/mdhafizur98" },
+    { label: "GitHub", url: "https://github.com/mdhafizur" }
+  ],
+  figures: [["6+ yrs", "in production software"], ["8", "systems below"], ["100k+", "end users served"]],
+  about: [
+    "I work across the stack, but I'm happiest where the backend meets operations: message flows between networks, identity, payments, and the migrations nobody wants to do. I like systems that are boring to run, with pinned versions, one clear owner for every piece of state, and a rollback that is one change away.",
+    "Languages I use day to day: TypeScript and Node.js, Go, Java and Kotlin with Spring Boot, and C# with .NET. On the frontend I mostly work in Angular, with Next.js, React and Vue when the project calls for it.",
+    "EU Blue Card holder, authorized to work in Germany. English fluent (C1), German A2 and improving."
+  ],
+  education: [
+    { school: "Technische Universität Chemnitz", degree: "M.Sc. Web Engineering", when: "2023 - 2026" },
+    { school: "Universiti Putra Malaysia", degree: "B.Sc. Software Engineering", when: "2017 - 2020" }
+  ],
+
+  /* ---------- EXPERIENCE (timeline) ---------- */
+  experience: [
+    { when: "Nov 2025 - now", role: "Senior Software Engineer", org: "Software consultancy · Bamberg, Germany", note: "Main developer of seven production services for a public-sector client.", project: "meridian" },
+    { when: "Jan 2024 - Oct 2025", role: "Software Engineer (Working Student)", org: "Neon Information Security GmbH · Remote, Munich", note: "Go APIs, Next.js UI and an AI log reviewer for a security validation product.", project: "vase" },
+    { when: "Jan 2023 - Oct 2023", role: "Software Engineer / Project Lead", org: "Wavelet Solutions Sdn. Bhd. · Subang Jaya", note: "Led a five-person team building a campaign-automation platform for retailers.", project: "wavelet-campaigns" },
+    { when: "Nov 2022 - Oct 2023", role: "Senior Software Consultant (Contract)", org: "Eboss Group Holdings · Remote, Petaling Jaya", note: "Migrated a 100,000-user property platform off Azure and rebuilt its payments.", project: "mylivin" },
+    { when: "Jan 2022 - Jun 2022", role: "Software Engineer (Contract)", org: "CSide Technologies · Remote, Kuala Lumpur", note: "Distributor portal and an ERP scripting upgrade across 30 modules.", project: "distributor-portal" },
+    { when: "Jul 2020 - Oct 2022", role: "Software Engineer (Frontend, then Full-Stack)", org: "Maxx Media (S) Sdn. Bhd. · Kota Kinabalu", note: "Re-architected a property listings platform and owned its UX.", project: "propertyhunter" },
+    { when: "Jan 2020 - Jun 2020", role: "Software Engineer", org: "Enviro Exceltech Sdn. Bhd. · Selangor", note: "Connected environmental monitoring instruments to reporting software.", project: "enviro-monitoring" }
+  ],
+
+  /* ---------- CASE STUDIES ----------
+     Meridian is a codename. Its client is under NDA.
+     architecture: { boundary: {label, from, to}, tiers: [{ link: "label on the connector above", nodes: [[name, note, kind]] }] }
+     kind: "core" (what I built), "ext" (outside the system), "store" (data), or empty.
+  */
+  projects: [
+    {
+      slug: "meridian",
+      title: "Meridian",
+      kind: "Public-sector digital services",
+      summary: "Citizen-facing services for a German state authority: online case lookup, digital hearings, identity, geodata, and a signed message relay between two isolated networks.",
+      years: "2025 - now",
+      status: "Live",
+      role: "Main developer, 7 of the platform's services",
+      team: "5 engineers",
+      client: "German state authority (codename)",
+      stack: ["Angular 20", "Node.js", "Kotlin", "Spring Boot", "RabbitMQ", "Redis", "MongoDB", "Keycloak", "Kubernetes"],
+      overview: [
+        "Citizens use the platform to look up a traffic-offence case, see the fine, and respond to an official hearing online instead of by post. Behind the public pages, an internal network holds the case data, and the two networks can't talk to each other directly.",
+        "I'm the main developer on seven of its services: the citizen portal, the public hearing gateway, the cross-network relay, the identity service, a reverse-geocoding service, a customer-feedback service, and the tracing and metrics setup that covers all of them."
+      ],
+      architecture: {
+        boundary: { label: "Kubernetes · public zone", from: 1, to: 3 },
+        tiers: [
+          { nodes: [["Citizens", "browser", "ext"]] },
+          { link: "HTTPS · proof-of-work bot check", nodes: [["Citizen portal", "Angular 20 · route guards"], ["Hearing gateway", "Node.js · public API"]] },
+          { link: "REST · OAuth2/JWT · OpenAPI-validated", nodes: [["Identity service", "cached Keycloak read layer"], ["Geo service", "Kotlin · Spring Boot"], ["Feedback service", "Node.js · HMAC"]] },
+          { link: "AMQP", nodes: [["Cross-network relay", "RabbitMQ · Redis dedup · retry/DLQ", "core"]] },
+          { link: "Ed25519-signed, one-way bridge", nodes: [["Internal case systems", "restricted network", "ext"], ["Keycloak", "identity provider", "ext"], ["Federal geo services", "3 queried in parallel", "ext"]] }
+        ]
+      },
+      scale: [
+        ["Services I own", "7 in production"],
+        ["Relay throughput", "~50,000 messages/day"],
+        ["Observed traffic", "~10,000 requests/day, 10+ services"],
+        ["Message signing", "Ed25519, keys in certificates"],
+        ["Geo lookups", "3 federal services in parallel"]
+      ],
+      decisions: [
+        "**A relay instead of a direct link.** The two networks are separated by a restrictive bridge. Every request is signed, deduplicated in Redis, batched, and retried through a dead-letter queue, so a message is never lost or applied twice.",
+        "**One user schema over two identity sources.** The identity service caches Keycloak and a second auth provider in MongoDB and serves one consistent schema with cursor pagination and problem+json errors.",
+        "**Proof-of-work instead of an image captcha.** The citizen login uses ALTCHA, which blocks bots without asking people to read distorted text.",
+        "**Load-test before sizing.** The geo service's Kubernetes requests and limits come from k6 runs, not guesses.",
+        "**Conventions as code.** I wrote a 23-skill plugin for Claude Code and Codex that encodes how the team builds a service, from scaffold to deployment, so engineers and AI agents follow the same rules."
+      ]
+    },
+    {
+      slug: "vase",
+      title: "VASE",
+      kind: "Security validation platform",
+      summary: "A platform that runs controlled attack simulations on test endpoints and checks whether the security monitoring actually detected them.",
+      years: "2024 - 2025",
+      status: "Shipped",
+      role: "Backend and frontend engineer",
+      client: "Neon Information Security GmbH",
+      stack: ["Go", "Next.js", "MongoDB", "Elasticsearch", "Docker", "Ollama"],
+      overview: [
+        "Security teams buy detection tools and then have no easy way to prove they work. This product answers that question: it runs MITRE ATT&CK test cases on endpoints in a controlled way, then checks the SIEM to see which ones were detected and which slipped through.",
+        "I built modular Go APIs and the Next.js screens on top of them, contributed test cases to the detection library, and proposed and shipped an AI reviewer that reads execution logs the way an analyst would."
+      ],
+      architecture: {
+        boundary: { label: "Platform · Docker", from: 1, to: 3 },
+        tiers: [
+          { nodes: [["Security analyst", "browser", "ext"]] },
+          { link: "HTTPS · JWT", nodes: [["Web console", "Next.js"], ["Console API", "Go · repository pattern", "core"]] },
+          { link: "shared state", nodes: [["Orchestration server", "schedules test runs"], ["MongoDB", "runs, results, config", "store"]] },
+          { link: "results and logs", nodes: [["AI log reviewer", "local LLM", "core"]] },
+          { link: "mutually authenticated TLS · detection checks", nodes: [["Test endpoints", "Windows · Linux · macOS", "ext"], ["SIEM", "Elasticsearch", "ext"]] }
+        ]
+      },
+      scale: [
+        ["Test cases contributed", "150+ (MITRE ATT&CK)"],
+        ["Techniques per run", "30 to 40+"],
+        ["AI reviewer agreement", "~95% with analysts"],
+        ["Analyst time saved", "2 to 3 hours/day"],
+        ["Environment setup", "20 min to under 10"]
+      ],
+      decisions: [
+        "**AI review as a first pass, not a verdict.** The reviewer runs on a local model, so logs never leave the customer's environment. Analysts confirm its calls, and it agreed with them about 95% of the time.",
+        "**Modular Go services with one auth model.** MVC, repository and handler layers in every service, with JWT authentication shared across them.",
+        "**Detection rules alongside test cases.** Each test case I added came with Elasticsearch-based detection rules and alerting, so a run measures something concrete.",
+        "**Faster environments.** Dockerized the services and tightened CI/CD, cutting setup and deployment from 20 minutes to under 10."
+      ]
+    },
+    {
+      slug: "wavelet-campaigns",
+      title: "Wavelet Campaigns",
+      kind: "Campaign automation",
+      summary: "A platform national retailers such as Senheng, Wah Kong and Sports Direct use to plan and send targeted sales campaigns to their customers over WhatsApp and Telegram.",
+      years: "2023",
+      status: "Shipped",
+      role: "Project lead, 5-person team",
+      client: "Wavelet Solutions, for Senheng, Wah Kong, Sports Direct",
+      stack: ["Angular", "RxJS", "NgRx", "Spring Boot", "AWS Lambda", "PostgreSQL", "Liquibase", "Flask", "Firebase"],
+      overview: [
+        "Retailers import their customer lists, build segments, schedule a campaign, and track delivery and response, all from one console. Messages go out through WhatsApp and Telegram.",
+        "I led the team and owned the technical decisions. I built the Angular console, the Spring Boot APIs behind it, the serverless bulk jobs, and the integration APIs into the clients' ERP systems."
+      ],
+      architecture: {
+        boundary: { label: "AWS", from: 2, to: 3 },
+        tiers: [
+          { nodes: [["Retail marketing teams", "browser", "ext"]] },
+          { link: "HTTPS", nodes: [["Campaign console", "Angular · RxJS · NgRx", "core"]] },
+          { link: "REST", nodes: [["Campaign API", "Spring Boot", "core"], ["Bulk import & dispatch", "AWS Lambda, batched"], ["Contact-center chat API", "Flask-RESTful · Firebase"]] },
+          { link: "SQL", nodes: [["PostgreSQL", "Liquibase migrations", "store"], ["ERP integration API", "Spring Boot"]] },
+          { link: "outbound", nodes: [["WhatsApp · Telegram", "messaging channels", "ext"], ["Client ERP systems", "orders, customers", "ext"]] }
+        ]
+      },
+      scale: [
+        ["Records per import", "100,000+"],
+        ["Team", "5 engineers"],
+        ["Code reviews", "80+"],
+        ["Clients", "Several national retailers"]
+      ],
+      decisions: [
+        "**Serverless for the spiky work.** Contact imports and campaign dispatch run as batched Lambda jobs. They scale with a 100,000-row import and cost nothing between campaigns.",
+        "**State in NgRx.** Scheduling, contacts and reports share one store, which kept a large console predictable.",
+        "**Schema changes through Liquibase.** Every database change is versioned and reviewed like code.",
+        "**Documentation as part of the API.** I wrote the API and integration docs that client teams built against."
+      ]
+    },
+    {
+      slug: "mylivin",
+      title: "MyLivin",
+      kind: "Property billing platform",
+      summary: "A billing and payments platform property managers use for unit billing, invoices and resident accounts. I moved it off Azure, rebuilt its payments, and later rescued it onto new hardware.",
+      years: "2022 - 2023, ongoing support",
+      status: "Live",
+      role: "Lead engineer for migration, payments and operations",
+      client: "Eboss Group Holdings, Malaysia",
+      stack: ["ASP.NET Core", "EF Core", "PostgreSQL", "MinIO", "Traefik", "Docker", "Proxmox", "Prometheus", "Grafana"],
+      overview: [
+        "Property management companies bill residents per building and unit, issue invoices, and take online payments through the platform. It has two .NET APIs, a web frontend, PostgreSQL for data and MinIO for files such as invoices and visitor records.",
+        "I led the move from Azure to self-hosting, moved payments to a new gateway with no downtime, and delivered features with xUnit tests behind them. In 2026, when the host could no longer run Linux containers, I moved the whole stack onto a dedicated Proxmox server and added backups and monitoring."
+      ],
+      architecture: {
+        boundary: { label: "Ubuntu VM on Proxmox · Docker Compose", from: 1, to: 4 },
+        tiers: [
+          { nodes: [["Residents & property managers", "browser, mobile", "ext"]] },
+          { link: "HTTPS :443", nodes: [["Traefik", "TLS, routing, metrics"]] },
+          { nodes: [["Web frontend", "billing, invoices"], ["Core API", "ASP.NET Core · EF Core", "core"], ["Partner API", "ASP.NET Core", "core"]] },
+          { link: "SQL · S3 API", nodes: [["PostgreSQL", "accounts, billing", "store"], ["MinIO", "invoices, uploads", "store"]] },
+          { link: "scrape · nightly", nodes: [["Prometheus + Grafana", "routes, containers, DB"], ["Backups", "dumps + snapshots, 14 days"]] },
+          { link: "outbound", nodes: [["Payment gateway", "online payments", "ext"]] }
+        ]
+      },
+      scale: [
+        ["Users", "100,000+"],
+        ["Payments", "~1,000 transactions/day"],
+        ["Failed payments", "70 to 20 per 1,000"],
+        ["Payment processing", "5 s to 3 s"],
+        ["Cloud cost saved", "~$1,200/month"],
+        ["Data moved in 2026 rescue", "~180 GB"],
+        ["Typical p95 latency", "0.1 to 0.5 s"]
+      ],
+      decisions: [
+        "**Images pinned to Git commits.** Production state has one answer, and rollback is a one-line change. That made both migrations mechanical.",
+        "**State in exactly two places.** Everything persistent lives in PostgreSQL or MinIO, so a move is a copy, a restore, and a DNS switch.",
+        "**Payment migration behind a switch.** The new gateway ran alongside the old one until it proved itself, with no downtime for residents.",
+        "**Linux under Linux containers.** After nested virtualization was switched off on the old host, the stack moved to a hypervisor we control.",
+        "**Measure before blaming the server.** Monitoring showed an idle machine, a heavy 404 page and a cluster of API errors, which pointed the fixes at code instead of hardware."
+      ],
+      posts: ["nested-virtualization", "compose-to-proxmox", "traefik-metrics"]
+    },
+    {
+      slug: "distributor-portal",
+      title: "CSide Distributor Portal",
+      kind: "Distributor portal and ERP upgrade",
+      summary: "A self-service portal for distributors with live inventory, bulk ordering and approvals, plus a large scripting upgrade of the company's ERP.",
+      years: "2022",
+      status: "Shipped",
+      role: "Full-stack engineer (contract)",
+      client: "CSide Technologies",
+      stack: ["Django", "NestJS", "Express", "Tailwind CSS", "Celery", "Redis", "Kafka", "Docker", "NetSuite"],
+      overview: [
+        "Distributors log in to check stock in real time, upload bulk orders from spreadsheets, and track approvals that used to happen by email.",
+        "Separately, I moved 30 ERP modules and about 400 scripts from SuiteScript 1.0 to 2.1 across millions of records, and built a two-way sync between the ERP and Google Calendar so staff stopped re-entering appointments."
+      ],
+      architecture: {
+        boundary: { label: "DigitalOcean · Docker", from: 1, to: 3 },
+        tiers: [
+          { nodes: [["Distributors", "100+ companies", "ext"]] },
+          { link: "HTTPS", nodes: [["Portal UI", "Tailwind CSS"]] },
+          { link: "REST", nodes: [["Portal APIs", "Django · NestJS · Express", "core"]] },
+          { link: "jobs · events", nodes: [["Background workers", "Celery + Redis"], ["Event stream", "Kafka"]] },
+          { link: "ERP APIs", nodes: [["ERP", "NetSuite · SuiteScript 2.1", "ext"], ["Calendar sync", "two-way, updates & cancellations", "core"], ["Google Calendar", "staff calendars", "ext"]] }
+        ]
+      },
+      scale: [
+        ["Distributors", "100+"],
+        ["ERP modules upgraded", "30"],
+        ["Scripts migrated", "~400"],
+        ["Records touched", "millions"]
+      ],
+      decisions: [
+        "**Slow work off the request path.** Bulk uploads and approvals run in Celery workers, so the portal stays responsive with large files.",
+        "**Events for inventory changes.** Kafka carries stock updates to everything that needs them instead of every service polling the ERP.",
+        "**Migrate scripts module by module.** Each module moved to SuiteScript 2.1 on its own, so a problem stayed small and easy to roll back."
+      ]
+    },
+    {
+      slug: "propertyhunter",
+      title: "PropertyHunter",
+      kind: "Property listings platform",
+      summary: "propertyhunter.com.my, a Malaysian property search and listings site for buyers and agents, rebuilt from a legacy codebase, with reviews and the backend services behind the business.",
+      years: "2020 - 2022",
+      status: "Shipped",
+      role: "Frontend, then full-stack engineer",
+      client: "Maxx Media (S) Sdn. Bhd.",
+      stack: ["Vue.js", "Laravel", "Java", "Spring Boot", "Figma", "REST"],
+      overview: [
+        "People search listings, compare properties and read reviews. Agents publish and manage their listings. I joined on the frontend and was promoted to full-stack within a year.",
+        "I re-architected the legacy site on Laravel and Vue.js, designed the REST APIs, and owned the user experience from research and Figma prototypes through to build. I also built Spring Boot services for payments, reporting and the internal ERP."
+      ],
+      architecture: {
+        tiers: [
+          { nodes: [["Buyers & agents", "browser", "ext"]] },
+          { link: "HTTPS", nodes: [["Listings site", "Vue.js", "core"]] },
+          { link: "REST", nodes: [["Listings API", "Laravel", "core"], ["Review system", "Laravel", "core"]] },
+          { link: "internal APIs", nodes: [["Payments", "Spring Boot"], ["Reporting", "Spring Boot"], ["Internal ERP", "Spring Boot"]] },
+          { nodes: [["Relational database", "listings, users, reviews", "store"]] }
+        ]
+      },
+      scale: [
+        ["Monthly visitors", "~50,000"],
+        ["Active listings", "~5,000"],
+        ["New reviews", "~40/day"],
+        ["Site visits after reviews", "+20%"],
+        ["Page load", "10 s to 3 s"]
+      ],
+      decisions: [
+        "**Research before screens.** I ran user research and designed the flows myself, so the build started from tested prototypes rather than finished mockups.",
+        "**Reviews as a growth feature.** The review system brought return visits and fresh content, and site visits rose 20%.",
+        "**Fix rendering, not servers.** Page load dropped from 10 seconds to 3 by cutting DOM work on listing pages."
+      ]
+    },
+    {
+      slug: "enviro-monitoring",
+      title: "Enviro Monitoring Integration",
+      kind: "Environmental monitoring integration",
+      summary: "Connecting field instruments for water and air quality to reporting software, with a mobile app for field reports.",
+      years: "2020",
+      status: "Shipped",
+      role: "Software engineer",
+      client: "Enviro Exceltech Sdn. Bhd.",
+      stack: ["Kotlin", "Android", "Data extraction", "Instrument integration"],
+      overview: [
+        "Monitoring stations measure water and air quality and store readings in dataloggers. Getting those readings into reports was a manual job.",
+        "I integrated two instrument families with the reporting software, built tooling to extract data from datalogger exports, and wrote an Android app in Kotlin for segmented water-quality reports from the field."
+      ],
+      architecture: {
+        tiers: [
+          { nodes: [["Water quality sondes", "Proteus", "ext"], ["Air particulate monitors", "MetOne ES-62", "ext"]] },
+          { link: "readings", nodes: [["Dataloggers", "export files"]] },
+          { link: "file export", nodes: [["Extraction tooling", "parse, clean, normalize", "core"]] },
+          { link: "structured data", nodes: [["Reporting software", "compliance reports"], ["Field app", "Android · Kotlin", "core"]] }
+        ]
+      },
+      scale: [
+        ["Instrument families", "2"],
+        ["Report types", "water and air quality"]
+      ],
+      decisions: [
+        "**Work from exports.** The tooling reads the dataloggers' own export formats, so no hardware or firmware had to change.",
+        "**Segmented field reports.** The app splits water-quality reports by sampling segment, matching how field teams already worked."
+      ]
+    },
+    {
+      slug: "carevoice",
+      title: "CareVoice",
+      kind: "Personal project",
+      summary: "A Kotlin backend that turns nurses' spoken notes into structured vital signs and raises alerts, built as a production-style system end to end.",
+      years: "2026",
+      status: "Personal",
+      role: "Design and implementation",
+      stack: ["Kotlin", "Ktor", "PostgreSQL", "MongoDB", "RabbitMQ", "Redis", "Helm", "Kubernetes", "Grafana"],
+      overview: [
+        "A nurse dictates a note. The documentation service extracts vital signs into structured records, and the alert service decides whether anything needs attention right now. Staff see alerts live in the browser.",
+        "I built it to work through the decisions a real care platform faces: reliable messaging, encryption of health data, availability when a dependency fails, and where AI belongs in the flow. Each decision is written down as one of 25 ADRs."
+      ],
+      architecture: {
+        boundary: { label: "Kubernetes · Helm", from: 1, to: 4 },
+        tiers: [
+          { nodes: [["Care staff", "app, browser", "ext"]] },
+          { link: "HTTPS · JWT", nodes: [["Documentation service", "Ktor · PostgreSQL", "core"], ["Alert service", "Ktor · MongoDB", "core"]] },
+          { link: "transactional outbox", nodes: [["RabbitMQ", "events between services"], ["Redis", "pub/sub for live updates"]] },
+          { link: "live alerts (SSE)", nodes: [["Protocol guidance", "RAG · swappable LLM adapters"], ["Grafana", "metrics, dashboards"]] },
+          { nodes: [["PostgreSQL", "notes, vitals · AES-GCM", "store"], ["MongoDB", "alerts", "store"]] }
+        ]
+      },
+      scale: [
+        ["Services", "2"],
+        ["Architecture decision records", "25"],
+        ["Testing", "unit, load and security"],
+        ["Deployment", "Helm on local Kubernetes (k3d)"]
+      ],
+      decisions: [
+        "**Transactional outbox.** A note and its event are written in one database transaction, so an alert is never lost if the broker is down.",
+        "**Encrypt health data at the field level.** Clinical text is stored with AES-GCM, not just protected by disk encryption.",
+        "**LLMs behind ports.** The guidance feature talks to an interface. Swapping one model provider for another is a configuration change.",
+        "**Redis pub/sub for live updates.** Any pod can push an alert to any connected browser, so the service scales horizontally."
+      ]
+    },
+    {
+      slug: "code-guardian",
+      title: "Code Guardian",
+      kind: "Published VS Code extension",
+      summary: "A VS Code extension that checks JavaScript and TypeScript for security problems using a local model, so code never leaves the developer's machine.",
+      years: "2024 - 2026",
+      status: "Published",
+      role: "Author, M.Sc. thesis project",
+      stack: ["TypeScript", "VS Code API", "Ollama", "RAG"],
+      overview: [
+        "Cloud AI code review is a non-starter for many teams because the code would leave the building. Code Guardian runs the model locally through Ollama and grounds its findings with retrieval over security guidance.",
+        "Findings show up as editor diagnostics next to the code, with an explanation and a suggested fix. I built it for my M.Sc. thesis at TU Chemnitz."
+      ],
+      architecture: {
+        boundary: { label: "Developer's machine", from: 0, to: 3 },
+        tiers: [
+          { nodes: [["VS Code", "JavaScript / TypeScript files", "ext"]] },
+          { link: "editor API", nodes: [["Code Guardian extension", "commands, diagnostics, fixes", "core"]] },
+          { link: "context", nodes: [["Retriever", "security guidance index", "core"]] },
+          { link: "prompt + context", nodes: [["Local LLM", "Ollama", "ext"]] }
+        ]
+      },
+      scale: [
+        ["Languages analysed", "JavaScript, TypeScript"],
+        ["Code sent off-device", "none"]
+      ],
+      decisions: [
+        "**Local first.** Running the model on the developer's machine removes the privacy objection to AI review.",
+        "**Retrieval for grounding.** Findings cite security guidance pulled in at analysis time, which cuts made-up warnings."
+      ]
+    }
+  ]
+};
+
+/* ---------- Markdown (small, escaped) ---------- */
+function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+function inline(s) {
+  s = esc(s);
+  const codes = [];
+  s = s.replace(/`([^`]+)`/g, (_, c) => { codes.push(c); return "\u0000" + (codes.length - 1) + "\u0000"; });
+  s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+       .replace(/(^|[^*])\*([^*\s][^*]*)\*/g, "$1<em>$2</em>")
+       .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+       .replace(/\[([^\]]+)\]\((#[\w-]+)\)/g, '<a href="$2">$1</a>');
+  return s.replace(/\u0000(\d+)\u0000/g, (_, i) => "<code>" + codes[+i] + "</code>");
+}
+function md(src) {
+  const lines = src.replace(/\r/g, "").split("\n");
+  const ind = Math.min(...lines.filter(l => l.trim()).map(l => l.match(/^ */)[0].length));
+  const L = lines.map(l => l.slice(ind));
+  let out = [], i = 0;
+  while (i < L.length) {
+    let line = L[i];
+    if (!line.trim()) { i++; continue; }
+    let m;
+    if (line.trim().startsWith("```")) {
+      const buf = []; i++;
+      while (i < L.length && !L[i].trim().startsWith("```")) buf.push(L[i++]);
+      i++;
+      const pad = Math.min(...buf.filter(b => b.trim()).map(b => b.match(/^ */)[0].length), 99);
+      out.push("<pre><code>" + esc(buf.map(b => b.slice(pad)).join("\n")) + "</code></pre>");
+      continue;
+    }
+    if ((m = line.match(/^(#{1,3})\s+(.*)/))) {
+      const lv = m[1].length >= 3 ? 3 : 2;
+      out.push(`<h${lv}>${inline(m[2])}</h${lv}>`); i++; continue;
+    }
+    if (/^\s*[-*]\s+/.test(line)) {
+      const items = [];
+      while (i < L.length && /^\s*[-*]\s+/.test(L[i])) items.push("<li>" + inline(L[i++].replace(/^\s*[-*]\s+/, "")) + "</li>");
+      out.push("<ul>" + items.join("") + "</ul>"); continue;
+    }
+    if (/^\s*\d+\.\s+/.test(line)) {
+      const items = [], start = parseInt(line.trim(), 10);
+      while (i < L.length && /^\s*\d+\.\s+/.test(L[i])) {
+        items.push("<li>" + inline(L[i++].replace(/^\s*\d+\.\s+/, "")) + "</li>");
+        while (i < L.length && !L[i].trim() && L[i + 1] && /^\s*\d+\.\s+/.test(L[i + 1])) i++;
+      }
+      out.push(`<ol start="${start}">` + items.join("") + "</ol>"); continue;
+    }
+    if (line.startsWith(">")) {
+      const buf = [];
+      while (i < L.length && L[i].startsWith(">")) buf.push(L[i++].replace(/^>\s?/, ""));
+      out.push("<blockquote>" + inline(buf.join(" ")) + "</blockquote>"); continue;
+    }
+    const buf = [L[i++].trim()];
+    while (i < L.length && L[i].trim() && !/^(#{1,3}\s|```|>|[-*]\s|\d+\.\s)/.test(L[i].trim())) buf.push(L[i++].trim());
+    out.push("<p>" + inline(buf.join(" ")) + "</p>");
+  }
+  return out.join("\n");
+}
+
+/* ---------- Posts from markdown blocks ---------- */
+const POSTS = [...document.querySelectorAll('script[type="text/markdown"]')].map(el => {
+  const body = el.textContent;
+  const words = body.split(/\s+/).filter(Boolean).length;
+  return {
+    slug: el.dataset.slug, title: el.dataset.title, date: el.dataset.date,
+    summary: el.dataset.summary || "", body, minutes: Math.max(1, Math.round(words / 220))
+  };
+}).sort((a, b) => b.date.localeCompare(a.date));
+
+const fmtDate = d => new Date(d + "T12:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+
+/* ---------- Views ---------- */
+function header() {
+  return `<header class="site-head">
+    <a class="brand" href="#">${esc(SITE.short)}</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#work">Work</a><a href="#experience">Experience</a><a href="#writing">Writing</a><a href="#about">About</a>
+    </nav>
+  </header>`;
+}
+function footer() {
+  return `<footer class="foot">© ${new Date().getFullYear()} ${esc(SITE.name)} · ${esc(SITE.location)}</footer>`;
+}
+function projectRow(p) {
+  return `<li><a class="row" href="#project-${p.slug}">
+    <span class="row-title">${esc(p.title)}${p.status ? `<span class="pill">${esc(p.status)}</span>` : ""}</span>
+    <span class="row-meta">${esc(p.years || "")}</span>
+    <span class="row-sub">${esc(p.kind)}</span>
+    <p class="row-desc">${esc(p.summary)}</p>
+    ${p.stack ? `<span class="row-stack">${p.stack.slice(0, 6).map(s => `<span>${esc(s)}</span>`).join("")}</span>` : ""}
+  </a></li>`;
+}
+function postRow(p) {
+  return `<li><a class="row" href="#post-${p.slug}">
+    <span class="row-title">${esc(p.title)}</span>
+    <span class="row-meta">${fmtDate(p.date)}</span>
+    <p class="row-desc">${esc(p.summary)}</p>
+  </a></li>`;
+}
+function xpRow(x) {
+  const p = SITE.projects.find(q => q.slug === x.project);
+  return `<li>
+    <span class="xp-when">${esc(x.when)}</span>
+    <div class="xp-body">
+      <span class="xp-role">${esc(x.role)}</span>
+      <span class="xp-org">${esc(x.org)}</span>
+      <p>${esc(x.note)}</p>
+      ${p ? `<a class="xp-link" href="#project-${p.slug}">Case study: ${esc(p.title)} →</a>` : ""}
+    </div>
+  </li>`;
+}
+
+function home() {
+  return `${header()}
+  <div class="intro">
+    <span class="now">${esc(SITE.now)}</span>
+    <h1>${esc(SITE.headline)}</h1>
+    <p>${esc(SITE.intro)}</p>
+    <ul class="figures">${SITE.figures.map(f => `<li><b>${esc(f[0])}</b>${esc(f[1])}</li>`).join("")}</ul>
+  </div>
+  <section id="work"><h2 class="label">Case studies<span class="label-note">Meridian is a codename. Its client is under NDA.</span></h2>
+    <ul class="rows">${SITE.projects.map(projectRow).join("")}</ul>
+  </section>
+  <section id="experience"><h2 class="label">Experience</h2>
+    <ol class="xp">${SITE.experience.map(xpRow).join("")}</ol>
+  </section>
+  <section id="writing" class="posts"><h2 class="label">Writing</h2>
+    ${POSTS.length ? `<ul class="rows">${POSTS.map(postRow).join("")}</ul>` : `<p>First post coming soon.</p>`}
+  </section>
+  <section id="education"><h2 class="label">Education</h2>
+    <ul class="edu">${SITE.education.map(e => `<li><b>${esc(e.school)}</b><span class="row-meta">${esc(e.when)}</span><span>${esc(e.degree)}</span></li>`).join("")}</ul>
+  </section>
+  <section id="about" class="about"><h2 class="label">About</h2>
+    ${SITE.about.map(p => `<p>${esc(p)}</p>`).join("")}
+    <div class="contact">
+      <span id="email">${esc(SITE.email)}</span>
+      <button class="copy" id="copy-email" type="button">Copy email</button>
+      <span class="links">${SITE.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}</span>
+    </div>
+  </section>
+  ${footer()}`;
+}
+
+function nodeHtml(n) {
+  return `<div class="node${n[2] ? " " + n[2] : ""}"><b>${esc(n[0])}</b>${n[1] ? `<small>${esc(n[1])}</small>` : ""}</div>`;
+}
+function diagram(a) {
+  const piece = (t, i) => `${i ? `<div class="link-down" aria-hidden="true">${t.link ? `<span>${esc(t.link)}</span>` : ""}</div>` : ""}<div class="tier">${t.nodes.map(nodeHtml).join("")}</div>`;
+  const b = a.boundary;
+  let html = "";
+  a.tiers.forEach((t, i) => {
+    if (b && i === b.from) {
+      if (i) html += `<div class="link-down" aria-hidden="true">${t.link ? `<span>${esc(t.link)}</span>` : ""}</div>`;
+      html += `<div class="boundary"><span class="boundary-label">${esc(b.label)}</span>`;
+      html += `<div class="tier">${t.nodes.map(nodeHtml).join("")}</div>`;
+    } else {
+      html += piece(t, i);
+    }
+    if (b && i === b.to) html += `</div>`;
+  });
+  const kinds = new Set(a.tiers.flatMap(t => t.nodes.map(n => n[2] || "plain")));
+  const legend = [["core", "Built by me"], ["plain", "Platform component"], ["store", "Data store"], ["ext", "Outside the system"]]
+    .filter(k => kinds.has(k[0])).map(k => `<span><i class="l-${k[0]}"></i>${k[1]}</span>`).join("");
+  const desc = a.tiers.map(t => t.nodes.map(n => n[0]).join(", ")).join(", then ");
+  return `<div class="arch-frame"><div class="arch" role="img" aria-label="Architecture, top to bottom: ${esc(desc)}">${html}</div>
+    <div class="legend">${legend}</div></div>`;
+}
+
+function project(p) {
+  const facts = [["Role", p.role], ["Team", p.team], ["Client", p.client], ["When", p.years]].filter(f => f[1]);
+  const related = (p.posts || []).map(s => POSTS.find(x => x.slug === s)).filter(Boolean);
+  const idx = SITE.projects.indexOf(p);
+  const prev = SITE.projects[idx - 1], next = SITE.projects[idx + 1];
+  return `${header()}
+  <a class="back" href="#work">← All case studies</a>
+  <div class="page-head">
+    <span class="codename">${esc(p.kind)}</span>
+    <h1>${esc(p.title)}</h1>
+    <p class="lede">${esc(p.summary)}</p>
+    ${p.stack ? `<div class="chips">${p.stack.map(s => `<span class="chip">${esc(s)}</span>`).join("")}</div>` : ""}
+  </div>
+  ${facts.length ? `<dl class="facts">${facts.map(f => `<div><dt>${f[0]}</dt><dd>${esc(f[1])}</dd></div>`).join("")}</dl>` : ""}
+  ${p.overview ? `<section class="prose-ui"><h2 class="label">Technical overview</h2>${p.overview.map(t => `<p>${inline(t)}</p>`).join("")}</section>` : ""}
+  ${p.architecture ? `<section><h2 class="label">Architecture</h2>${diagram(p.architecture)}</section>` : ""}
+  ${p.scale ? `<section><h2 class="label">Scale</h2><table class="spec"><tbody>${p.scale.map(r => `<tr><th scope="row">${esc(r[0])}</th><td>${esc(r[1])}</td></tr>`).join("")}</tbody></table></section>` : ""}
+  ${p.decisions ? `<section class="prose-ui"><h2 class="label">Key decisions</h2><ul>${p.decisions.map(d => `<li>${inline(d)}</li>`).join("")}</ul></section>` : ""}
+  ${related.length ? `<section class="posts"><h2 class="label">Related writing</h2><ul class="rows">${related.map(postRow).join("")}</ul></section>` : ""}
+  <nav class="pager" aria-label="More case studies">
+    ${prev ? `<a href="#project-${prev.slug}"><small>Previous</small>${esc(prev.title)}</a>` : ""}
+    ${next ? `<a class="next" href="#project-${next.slug}"><small>Next</small>${esc(next.title)}</a>` : ""}
+  </nav>
+  ${footer()}`;
+}
+
+function post(p) {
+  return `${header()}
+  <a class="back" href="#writing">← All writing</a>
+  <div class="page-head">
+    <span class="byline">${fmtDate(p.date)} · ${p.minutes} min read</span>
+    <h1>${esc(p.title)}</h1>
+  </div>
+  <article class="article">${md(p.body)}</article>
+  ${footer()}`;
+}
+
+/* ---------- Router ---------- */
+const app = document.getElementById("app");
+function render() {
+  const h = decodeURIComponent(location.hash.slice(1));
+  let html, anchor = null, t = null;
+  if (h.startsWith("project-") && (t = SITE.projects.find(x => x.slug === h.slice(8)))) {
+    html = project(t);
+  } else if (h.startsWith("post-") && (t = POSTS.find(x => x.slug === h.slice(5)))) {
+    html = post(t);
+  } else {
+    t = null;
+    html = home();
+    if (["work", "experience", "writing", "education", "about"].includes(h)) anchor = h;
+  }
+  app.innerHTML = html;
+  const target = anchor && document.getElementById(anchor);
+  if (target) target.scrollIntoView(); else window.scrollTo(0, 0);
+  const btn = document.getElementById("copy-email");
+  if (btn) btn.addEventListener("click", () => {
+    const done = () => { btn.textContent = "Copied"; setTimeout(() => btn.textContent = "Copy email", 1600); };
+    const fallback = () => {
+      const r = document.createRange(); r.selectNodeContents(document.getElementById("email"));
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = "Selected, press Ctrl+C";
+    };
+    try { navigator.clipboard.writeText(SITE.email).then(done, fallback); } catch (e) { fallback(); }
+  });
+  document.title = t ? `${t.title} · ${SITE.short}` : SITE.short;
+}
+addEventListener("hashchange", render);
+render();
+</script>
+
+</body>
+</html>
