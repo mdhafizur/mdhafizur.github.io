@@ -465,6 +465,7 @@ const SITE = {
   projects: [
     {
       slug: "meridian",
+      start: "2025-11",
       title: "Meridian",
       kind: "Public-sector microservice platform",
       summary: "A microservice platform for a German public-sector authority: citizen portals, digital hearings, case and document services, shared platform services, geodata, and a signed relay between two isolated networks.",
@@ -565,6 +566,7 @@ const SITE = {
     },
     {
       slug: "vase",
+      start: "2024-01",
       title: "VASE",
       kind: "Security validation platform",
       summary: "A platform that runs controlled attack simulations on test endpoints and checks whether the security monitoring actually detected them.",
@@ -603,6 +605,7 @@ const SITE = {
     },
     {
       slug: "wavelet-campaigns",
+      start: "2023-01",
       title: "Wavelet Campaigns",
       kind: "Campaign automation",
       summary: "A platform national retailers such as Senheng, Wah Kong and Sports Direct use to plan and send targeted sales campaigns to their customers over WhatsApp and Telegram.",
@@ -640,6 +643,7 @@ const SITE = {
     },
     {
       slug: "mylivin",
+      start: "2022-11",
       title: "MyLivin",
       kind: "Property billing platform",
       summary: "A billing and payments platform property managers use for unit billing, invoices and resident accounts. I moved it off Azure, rebuilt its payments, and later rescued it onto new hardware.",
@@ -683,6 +687,7 @@ const SITE = {
     },
     {
       slug: "distributor-portal",
+      start: "2022-01",
       title: "CSide Distributor Portal",
       kind: "Distributor portal and ERP upgrade",
       summary: "A self-service portal for distributors with live inventory, bulk ordering and approvals, plus a large scripting upgrade of the company's ERP.",
@@ -719,6 +724,7 @@ const SITE = {
     },
     {
       slug: "propertyhunter",
+      start: "2020-07",
       title: "PropertyHunter",
       kind: "Property listings platform",
       summary: "propertyhunter.com.my, a Malaysian property search and listings site for buyers and agents, rebuilt from a legacy codebase, with reviews and the backend services behind the business.",
@@ -755,6 +761,7 @@ const SITE = {
     },
     {
       slug: "enviro-monitoring",
+      start: "2020-01",
       title: "Enviro Monitoring Integration",
       kind: "Environmental monitoring integration",
       summary: "Connecting field instruments for water and air quality to reporting software, with a mobile app for field reports.",
@@ -786,13 +793,14 @@ const SITE = {
     },
     {
       slug: "carevoice",
+      start: "2026-10",
       title: "CareVoice",
       kind: "Personal project",
       summary: "A Kotlin backend that turns nurses' spoken notes into structured vital signs and raises alerts, built as a production-style system end to end.",
       years: "2026",
       status: "Personal",
       role: "Design and implementation",
-      stack: ["Kotlin", "Ktor", "PostgreSQL", "MongoDB", "RabbitMQ", "Redis", "Helm", "Kubernetes", "Grafana"],
+      stack: ["Kotlin", "Ktor", "PostgreSQL", "MongoDB", "RabbitMQ", "Redis", "Testcontainers", "Pact", "Gatling", "Helm", "Kubernetes", "Grafana"],
       overview: [
         "A nurse dictates a note. The documentation service extracts vital signs into structured records, and the alert service decides whether anything needs attention right now. Staff see alerts live in the browser.",
         "I built it to work through the decisions a real care platform faces: reliable messaging, encryption of health data, availability when a dependency fails, and where AI belongs in the flow. Each decision is written down as one of 25 ADRs."
@@ -810,18 +818,28 @@ const SITE = {
       scale: [
         ["Services", "2"],
         ["Architecture decision records", "25"],
-        ["Testing", "unit, load and security"],
+        ["Domain unit tests", "~400, data-driven"],
+        ["Integration tests", "embedded DBs or Testcontainers"],
+        ["Contract tests", "Pact, HTTP and messages"],
+        ["Fault injection", "Toxiproxy on RabbitMQ"],
+        ["Other checks", "mutation, architecture, query plans"],
+        ["Load tests", "Gatling: smoke, load, stress"],
+        ["Coverage gate", "80% lines, 65% branches"],
         ["Deployment", "Helm on local Kubernetes (k3d)"]
       ],
       decisions: [
         "**Transactional outbox.** A note and its event are written in one database transaction, so an alert is never lost if the broker is down.",
         "**Encrypt health data at the field level.** Clinical text is stored with AES-GCM, not just protected by disk encryption.",
         "**LLMs behind ports.** The guidance feature talks to an interface. Swapping one model provider for another is a configuration change.",
-        "**Redis pub/sub for live updates.** Any pod can push an alert to any connected browser, so the service scales horizontally."
+        "**Redis pub/sub for live updates.** Any pod can push an alert to any connected browser, so the service scales horizontally.",
+        "**Test against real infrastructure.** Integration tests run on embedded databases for speed or on Testcontainers with production images. The outbox relay is tested end to end, and Toxiproxy cuts the broker connection to prove retries and backoff work.",
+        "**Contracts between services, checked in CI.** The documentation service writes Pact contracts for its HTTP calls and events, and the alert service verifies them, so neither side can break the other unnoticed.",
+        "**Guard the things that rot quietly.** Konsist enforces the hexagonal layering, query-plan tests fail if a query stops using its index, and Pitest mutation testing checks that the domain tests actually catch bugs."
       ]
     },
     {
       slug: "code-guardian",
+      start: "2024-06",
       title: "Code Guardian",
       kind: "Published VS Code extension",
       summary: "A VS Code extension that checks JavaScript and TypeScript for security problems using a local model, so code never leaves the developer's machine.",
@@ -853,6 +871,9 @@ const SITE = {
     }
   ]
 };
+
+// Newest first, by start date
+SITE.projects.sort((a, b) => b.start.localeCompare(a.start));
 
 /* ---------- Markdown (small, escaped) ---------- */
 function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
